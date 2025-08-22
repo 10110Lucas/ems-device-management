@@ -1,5 +1,6 @@
 package com.algaworks.algasensors.device.management.api.controller;
 
+import com.algaworks.algasensors.device.management.api.client.SensorMonitoringClient;
 import com.algaworks.algasensors.device.management.api.model.SensorInput;
 import com.algaworks.algasensors.device.management.api.model.SensorOutput;
 import com.algaworks.algasensors.device.management.common.IdGenerator;
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class SensorController {
 
     private final SensorRepository sensorRepository;
+    private final SensorMonitoringClient client;
 
     @GetMapping
     public Page<SensorOutput> search(@PageableDefault Pageable pageable) {
@@ -74,6 +76,8 @@ public class SensorController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         sensor.setEnabled(true);
         sensorRepository.saveAndFlush(sensor);
+
+        client.enbleMonitoring(sensorId);
     }
 
     @DeleteMapping("/{sensorId}/enable")
@@ -83,6 +87,8 @@ public class SensorController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         sensor.setEnabled(false);
         sensorRepository.saveAndFlush(sensor);
+
+        client.disableMonitoring(sensorId);
     }
 
     @DeleteMapping("/{sensorId}")
