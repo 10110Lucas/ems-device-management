@@ -16,7 +16,7 @@ public class SensorMonitoringClientImpl implements SensorMonitoringClient {
     }
 
     @Override
-    public void enbleMonitoring(TSID sensorId) {
+    public void enableMonitoring(TSID sensorId) {
         restClient.put()
                 .uri("/api/sensors/{sensorId}/monitoring/enable", sensorId)
                 .retrieve()

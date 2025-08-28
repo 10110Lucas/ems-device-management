@@ -15,7 +15,7 @@ public interface SensorMonitoringClient {
     SensorMonitoringOutput getDetail(@PathVariable TSID sensorId);
 
     @PutExchange("/enable")
-    void enbleMonitoring(@PathVariable TSID sensorId);
+    void enableMonitoring(@PathVariable TSID sensorId);
 
     @DeleteExchange("/enable")
     void disableMonitoring(@PathVariable TSID sensorId);

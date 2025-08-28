@@ -27,13 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/api/sensors")
+@RequestMapping("/sensors")
 @RequiredArgsConstructor
 public class SensorController {
 
     private final SensorRepository sensorRepository;
     private final SensorMonitoringClient client;
-    private final SensorMonitoringClient sensorMonitoringClient;
 
     @GetMapping
     public Page<SensorOutput> search(@PageableDefault Pageable pageable) {
@@ -54,7 +53,7 @@ public class SensorController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         SensorOutput sensorOutput = convertToModel(sensor);
-        SensorMonitoringOutput monitoringOutput = sensorMonitoringClient.getDetail(sensorId);
+        SensorMonitoringOutput monitoringOutput = client.getDetail(sensorId);
 
         return SensorDetailOutput.builder()
                 .sensor(sensorOutput)
@@ -100,7 +99,7 @@ public class SensorController {
         sensor.setEnabled(true);
         sensorRepository.saveAndFlush(sensor);
 
-        client.enbleMonitoring(sensorId);
+        client.enableMonitoring(sensorId);
     }
 
     @DeleteMapping("/{sensorId}/enable")

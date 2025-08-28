@@ -1,6 +1,7 @@
 package com.algaworks.algasensors.device.management.api.client;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -15,8 +16,11 @@ public class RestClientFactory {
 
     private final RestClient.Builder builder;
 
+    @Value("${base.url.temperatureMonitoringApi}")
+    private String baseUrlTemperatureMonitoringApi;
+
     public RestClient temperatureMonitoringRestClient() {
-        return builder.baseUrl("http://localhost:8082")
+        return builder.baseUrl(baseUrlTemperatureMonitoringApi)
                 .requestFactory(generateClientHttpRequestFactory())
                 .defaultStatusHandler(HttpStatusCode::isError, ((request, response) -> {
                     throw new SensorMonitoringClientBadGatewayException();

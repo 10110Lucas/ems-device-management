@@ -16,4 +16,12 @@ public class RestClientConfig {
         HttpServiceProxyFactory proxyFactory = HttpServiceProxyFactory.builderFor(adapter).build();
         return proxyFactory.createClient(SensorMonitoringClient.class);
     }
+
+    @Bean
+    public ModerationClient moderationClient(RestClientFactory factory) {
+        RestClient restClient = factory.temperatureMonitoringRestClient();
+        RestClientAdapter adapter = RestClientAdapter.create(restClient);
+        HttpServiceProxyFactory proxyFactory = HttpServiceProxyFactory.builderFor(adapter).build();
+        return proxyFactory.createClient(ModerationClient.class);
+    }
 }
